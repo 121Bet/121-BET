@@ -3,62 +3,142 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>121 BET - Official</title>
+    <title>121 BET - New Pro</title>
     <style>
-        /* Base Reset */
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { background: #000; color: #fff; font-family: 'Arial', sans-serif; overflow-x: hidden; }
+        /* CSS Reset & Body */
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: #ffffff; color: #333; overflow-x: hidden; }
+
+        /* Header Styles based on Template */
+        .header { display: flex; justify-content: space-between; align-items: center; padding: 15px; background: #fff; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .profile-icon { width: 35px; height: 35px; border-radius: 50%; border: 2px solid #ccc; }
+        .logo-text { font-size: 28px; font-weight: 900; font-style: italic; color: #f2a900; text-shadow: 1px 1px 2px rgba(0,0,0,0.1); }
+        .wallet-container { display: flex; align-items: center; gap: 5px; font-weight: bold; }
+        .wallet-icon { font-size: 24px; }
 
         /* Screen Management */
-        .page { display: none; width: 100%; min-height: 100vh; position: absolute; top: 0; left: 0; }
-        .page.active { display: block; }
+        .screen { display: none; width: 100vw; min-height: 100vh; }
+        .active-screen { display: block; }
 
-        /* Header UI */
-        .top-bar { display: flex; justify-content: space-between; align-items: center; padding: 10px 15px; background: #151515; border-bottom: 2px solid #ffcc00; position: sticky; top: 0; z-index: 100; }
-        .balance-tag { background: #ffcc00; color: #000; padding: 5px 12px; border-radius: 50px; font-weight: bold; font-size: 14px; }
+        /* Game Grid based on Template */
+        .grid-container { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; padding: 20px; margin-top: 10px; }
+        .grid-item { border: 2.5px solid #000; border-radius: 25px; aspect-ratio: 1/1; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; transition: transform 0.2s; position: relative; overflow: hidden; background: #fafafa; }
+        .grid-item:active { transform: scale(0.95); }
+        .grid-item img { width: 80%; height: auto; object-fit: contain; }
+        .grid-item span { margin-top: 10px; font-weight: bold; font-size: 14px; color: #000; }
 
-        /* Menu Grid */
-        .menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding: 20px; }
-        .game-btn { background: #1e1e1e; border: 1px solid #333; border-radius: 12px; overflow: hidden; text-align: center; cursor: pointer; transition: 0.3s; }
-        .game-btn:active { transform: scale(0.95); }
-        .game-btn img { width: 100%; height: 100px; object-fit: cover; }
-        .game-btn p { padding: 10px; color: #ffcc00; font-weight: bold; font-size: 14px; }
+        /* Aviator Game Screen UI */
+        .aviator-header { background: #000; color: #fff; padding: 15px; display: flex; align-items: center; gap: 15px; }
+        .back-btn { background: #f2a900; border: none; padding: 5px 15px; border-radius: 5px; font-weight: bold; cursor: pointer; }
+        .game-area { background: #000; height: 350px; position: relative; overflow: hidden; }
+        .multiplier { position: absolute; width: 100%; text-align: center; top: 40%; font-size: 55px; font-weight: 900; color: #fff; z-index: 10; }
+        #plane-img { position: absolute; bottom: 40px; left: 20px; width: 80px; z-index: 15; transition: transform 0.1s linear; }
 
-        /* Aviator Game Layout */
-        .aviator-container { background: #000; height: 320px; position: relative; overflow: hidden; border-bottom: 3px solid #222; }
-        .crash-value { position: absolute; width: 100%; text-align: center; top: 40%; font-size: 45px; font-weight: 900; color: #fff; z-index: 5; }
-        #airplane { position: absolute; bottom: 20px; left: 20px; width: 70px; z-index: 10; transition: transform 0.1s linear; }
-
-        /* Bet Controls */
-        .controls { padding: 20px; text-align: center; background: #0c0c0c; }
-        input[type="number"] { width: 80%; padding: 12px; background: #1a1a1a; border: 1px solid #444; color: #fff; border-radius: 5px; margin-bottom: 15px; outline: none; }
-        .bet-now { width: 100%; padding: 15px; background: #d40032; color: #fff; border: none; border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer; }
-
-        /* Back Button */
-        .back-nav { background: none; border: 1px solid #ffcc00; color: #ffcc00; padding: 5px 10px; border-radius: 4px; font-size: 12px; }
+        /* Betting Section */
+        .betting-box { padding: 25px; background: #f9f9f9; text-align: center; border-radius: 30px 30px 0 0; margin-top: -20px; position: relative; z-index: 20; box-shadow: 0 -5px 15px rgba(0,0,0,0.1); }
+        .bet-input { width: 90%; padding: 15px; border: 2px solid #ddd; border-radius: 12px; margin-bottom: 15px; font-size: 18px; text-align: center; outline: none; }
+        .bet-btn { width: 90%; padding: 15px; background: #e91e63; color: #fff; border: none; border-radius: 12px; font-size: 20px; font-weight: bold; box-shadow: 0 4px 0 #ad1457; }
+        .bet-btn:active { transform: translateY(2px); box-shadow: 0 2px 0 #ad1457; }
     </style>
 </head>
 <body>
 
-    <div id="screen-home" class="page active">
-        <div class="top-bar">
-            <div style="font-size: 12px;">👤 Guest</div>
-            <div style="color: #ffcc00; font-weight: bold;">121 BET</div>
-            <div class="balance-tag">₹ 0.00</div>
+    <div id="home-screen" class="screen active-screen">
+        <div class="header">
+            <div class="profile-icon"></div>
+            <div class="logo-text">121 BET</div>
+            <div class="wallet-container">
+                <span class="wallet-icon">💼</span>
+                <span>₹0.00</span>
+            </div>
         </div>
 
-        <div class="menu-grid">
-            <div class="game-btn" onclick="openGame('aviator')">
-                <img src="https://img.etimg.com/thumb/msid-101188448,width-300,resizemode-75/aviator.jpg">
-                <p>Aviator Live</p>
+        <div class="grid-container">
+            <div class="grid-item" onclick="changeScreen('aviator-screen'); startAviator();">
+                <img src="https://i.ibb.co/LNxv3Dq/plane.png" alt="Aviator">
+                <span>Aviator</span>
             </div>
-            <div class="game-btn">
-                <img src="https://assets.livecasinolist.com/game-images/dragon-tiger.jpg">
-                <p>Coming Soon</p>
+            <div class="grid-item">
+                <img src="https://cdn-icons-png.flaticon.com/512/3514/3514436.png" alt="Dragon">
+                <span>Coming Soon</span>
             </div>
+            <div class="grid-item"></div>
+            <div class="grid-item"></div>
+            <div class="grid-item"></div>
+            <div class="grid-item"></div>
         </div>
     </div>
 
+    <div id="aviator-screen" class="screen">
+        <div class="aviator-header">
+            <button class="back-btn" onclick="changeScreen('home-screen'); stopAviator();">BACK</button>
+            <span>AVIATOR LIVE</span>
+        </div>
+
+        <div class="game-area">
+            <div class="multiplier" id="mult-text">1.00x</div>
+            <img id="plane-img" src="https://i.ibb.co/LNxv3Dq/plane.png" alt="Plane">
+        </div>
+
+        <div class="betting-box">
+            <input type="number" class="bet-input" placeholder="Enter Amount (₹)">
+            <button class="bet-btn" onclick="alert('Waiting for next round...')">BET</button>
+        </div>
+    </div>
+
+    <script>
+        let gameOn = false;
+        let aviatorInterval;
+
+        // Screen Switcher Logic - Important to stop "Kachra"
+        function changeScreen(id) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active-screen'));
+            document.getElementById(id).classList.add('active-screen');
+            window.scrollTo(0,0);
+        }
+
+        function startAviator() {
+            gameOn = true;
+            let val = 1.00;
+            const text = document.getElementById('mult-text');
+            const plane = document.getElementById('plane-img');
+
+            // Reset UI
+            text.style.color = "white";
+            plane.style.transform = `translate(0, 0)`;
+
+            let limit = (Math.random() * 2.5 + 1.1).toFixed(2);
+
+            aviatorInterval = setInterval(() => {
+                if(!gameOn) return clearInterval(aviatorInterval);
+
+                val += 0.01;
+                text.innerText = val.toFixed(2) + "x";
+
+                // Movement calculation
+                let moveX = (val - 1) * 70;
+                let moveY = (val - 1) * -40;
+                plane.style.transform = `translate(${moveX}px, ${moveY}px)`;
+
+                if(val >= limit) {
+                    clearInterval(aviatorInterval);
+                    text.innerText = "FLEW AWAY!";
+                    text.style.color = "#ff4444";
+                    
+                    setTimeout(() => {
+                        if(gameOn) startAviator();
+                    }, 3000);
+                }
+            }, 80);
+        }
+
+        function stopAviator() {
+            gameOn = false;
+            clearInterval(aviatorInterval);
+        }
+    </script>
+</body>
+</html>
     <div id="screen-aviator" class="page">
         <div class="top-bar">
             <button class="back-nav" onclick="closeGame()">⬅ Back</button>
