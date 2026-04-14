@@ -3,62 +3,137 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>121 BET - User View</title>
+    <title>121 BET - Official</title>
     <style>
-        body { background: #0b0b0b; color: white; margin: 0; font-family: 'Segoe UI', sans-serif; }
-        .screen { display: none; min-height: 100vh; }
-        .active { display: block; }
-        
-        /* Header */
-        .top-nav { display: flex; justify-content: space-between; padding: 15px; background: #1a1a1a; border-bottom: 2px solid gold; }
-        .wallet { color: #000; background: gold; padding: 4px 12px; border-radius: 20px; font-weight: bold; }
+        /* Base Reset */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { background: #000; color: #fff; font-family: 'Arial', sans-serif; overflow-x: hidden; }
 
-        /* Game Grid */
-        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding: 15px; }
-        .card { background: #1e1e1e; border-radius: 12px; border: 1px solid #333; text-align: center; overflow: hidden; }
-        .card img { width: 100%; height: 100px; object-fit: cover; }
-        .card p { margin: 10px 0; color: gold; font-weight: bold; }
+        /* Screen Management */
+        .page { display: none; width: 100%; min-height: 100vh; position: absolute; top: 0; left: 0; }
+        .page.active { display: block; }
 
-        /* Aviator Area */
-        .game-box { height: 350px; background: #000; position: relative; overflow: hidden; border-bottom: 2px solid #222; }
-        #plane { position: absolute; bottom: 20px; left: 20px; width: 65px; z-index: 10; transition: 0.1s linear; }
-        .mult { position: absolute; width: 100%; text-align: center; top: 40%; font-size: 50px; font-weight: 900; }
-        
-        /* Betting UI */
-        .bet-controls { padding: 20px; text-align: center; }
-        .btn-bet { width: 100%; padding: 15px; background: #e91e63; color: white; border: none; border-radius: 8px; font-size: 18px; font-weight: bold; }
+        /* Header UI */
+        .top-bar { display: flex; justify-content: space-between; align-items: center; padding: 10px 15px; background: #151515; border-bottom: 2px solid #ffcc00; position: sticky; top: 0; z-index: 100; }
+        .balance-tag { background: #ffcc00; color: #000; padding: 5px 12px; border-radius: 50px; font-weight: bold; font-size: 14px; }
+
+        /* Menu Grid */
+        .menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding: 20px; }
+        .game-btn { background: #1e1e1e; border: 1px solid #333; border-radius: 12px; overflow: hidden; text-align: center; cursor: pointer; transition: 0.3s; }
+        .game-btn:active { transform: scale(0.95); }
+        .game-btn img { width: 100%; height: 100px; object-fit: cover; }
+        .game-btn p { padding: 10px; color: #ffcc00; font-weight: bold; font-size: 14px; }
+
+        /* Aviator Game Layout */
+        .aviator-container { background: #000; height: 320px; position: relative; overflow: hidden; border-bottom: 3px solid #222; }
+        .crash-value { position: absolute; width: 100%; text-align: center; top: 40%; font-size: 45px; font-weight: 900; color: #fff; z-index: 5; }
+        #airplane { position: absolute; bottom: 20px; left: 20px; width: 70px; z-index: 10; transition: transform 0.1s linear; }
+
+        /* Bet Controls */
+        .controls { padding: 20px; text-align: center; background: #0c0c0c; }
+        input[type="number"] { width: 80%; padding: 12px; background: #1a1a1a; border: 1px solid #444; color: #fff; border-radius: 5px; margin-bottom: 15px; outline: none; }
+        .bet-now { width: 100%; padding: 15px; background: #d40032; color: #fff; border: none; border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer; }
+
+        /* Back Button */
+        .back-nav { background: none; border: 1px solid #ffcc00; color: #ffcc00; padding: 5px 10px; border-radius: 4px; font-size: 12px; }
     </style>
 </head>
 <body>
 
-    <div id="home" class="screen active">
-        <div class="top-nav"><div>👤 Guest</div><div class="wallet">₹ 0.00</div></div>
-        <div class="grid">
-            <div class="card" onclick="openGame('aviator')">
-                <img src="https://img.etimg.com/thumb/msid-101188448,width-300,resizemode-75/aviator.jpg"><p>Aviator Live</p>
+    <div id="screen-home" class="page active">
+        <div class="top-bar">
+            <div style="font-size: 12px;">👤 Guest</div>
+            <div style="color: #ffcc00; font-weight: bold;">121 BET</div>
+            <div class="balance-tag">₹ 0.00</div>
+        </div>
+
+        <div class="menu-grid">
+            <div class="game-btn" onclick="openGame('aviator')">
+                <img src="https://img.etimg.com/thumb/msid-101188448,width-300,resizemode-75/aviator.jpg">
+                <p>Aviator Live</p>
             </div>
-            <div class="card"><img src="https://assets.livecasinolist.com/game-images/dragon-tiger.jpg"><p>Coming Soon</p></div>
+            <div class="game-btn">
+                <img src="https://assets.livecasinolist.com/game-images/dragon-tiger.jpg">
+                <p>Coming Soon</p>
+            </div>
         </div>
     </div>
 
-    <div id="aviator" class="screen">
-        <div class="top-nav"><button onclick="closeGame()" style="background:none; border:1px solid gold; color:gold; border-radius:5px;">⬅ Back</button><span>Aviator Live</span><div></div></div>
-        <div class="game-box">
-            <div class="mult" id="m-display">1.00x</div>
-            <img id="plane" src="https://i.ibb.co/LNxv3Dq/plane.png">
+    <div id="screen-aviator" class="page">
+        <div class="top-bar">
+            <button class="back-nav" onclick="closeGame()">⬅ Back</button>
+            <span style="font-size: 14px; font-weight: bold;">AVIATOR LIVE</span>
+            <div class="balance-tag">₹ 0.00</div>
         </div>
-        <div class="bet-controls">
-            <button class="btn-bet">PLACE BET</button>
+
+        <div class="aviator-container">
+            <div class="crash-value" id="count-text">1.00x</div>
+            <img id="airplane" src="https://i.ibb.co/LNxv3Dq/plane.png" alt="Plane">
+        </div>
+
+        <div class="controls">
+            <input type="number" placeholder="Enter Amount (Min ₹10)">
+            <button class="bet-now" onclick="alert('Bet Placed! Waiting for result...')">PLACE BET</button>
         </div>
     </div>
 
     <script>
-        let isPlaying = false;
-        function openGame(id) {
-            document.getElementById('home').classList.remove('active');
-            document.getElementById(id).classList.add('active');
-            if(id === 'aviator') { isPlaying = true; startLoop(); }
+        let isRunning = false;
+        let loopTimer;
+
+        // Function to switch screens
+        function openGame(game) {
+            if(game === 'aviator') {
+                document.getElementById('screen-home').classList.remove('active');
+                document.getElementById('screen-aviator').classList.add('active');
+                startLogic();
+            }
         }
+
+        function closeGame() {
+            isRunning = false;
+            clearInterval(loopTimer);
+            document.getElementById('screen-aviator').classList.remove('active');
+            document.getElementById('screen-home').classList.add('active');
+        }
+
+        function startLogic() {
+            isRunning = true;
+            let count = 1.00;
+            const text = document.getElementById('count-text');
+            const plane = document.getElementById('airplane');
+
+            // Reset UI
+            text.style.color = "white";
+            plane.style.transform = `translate(0, 0)`;
+
+            // Fake crash point for now (Admin panel baad me yaha connect hoga)
+            let crashPoint = (Math.random() * 2 + 1.1).toFixed(2);
+
+            loopTimer = setInterval(() => {
+                if(!isRunning) return clearInterval(loopTimer);
+
+                count += 0.01;
+                text.innerText = count.toFixed(2) + "x";
+
+                // Movement math
+                let x = (count - 1) * 60;
+                let y = (count - 1) * -35;
+                plane.style.transform = `translate(${x}px, ${y}px)`;
+
+                if(count >= crashPoint) {
+                    clearInterval(loopTimer);
+                    text.innerText = "CRASHED!";
+                    text.style.color = "#ff0000";
+                    
+                    // Restart after 3 seconds
+                    setTimeout(() => { if(isRunning) startLogic(); }, 3000);
+                }
+            }, 80);
+        }
+    </script>
+</body>
+</html>
         function closeGame() {
             isPlaying = false;
             document.getElementById('aviator').classList.remove('active');
