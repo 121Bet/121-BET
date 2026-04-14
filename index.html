@@ -3,44 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>One To One Bet</title>
+    <title>One To One Bet - Real Animation</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
 </head>
 <body>
+
     <div id="home-screen">
         <div class="top-bar">
             <div class="profile">👤 Guest</div>
             <div class="app-name">ONE TO ONE BET</div>
-            <div class="wallet">Balance: ₹ 0.00</div>
+            <div class="wallet">₹ 0.00</div>
         </div>
+        
         <div class="game-grid">
             <div class="game-card" onclick="openGame('aviator')">
-                <div class="icon">🚀</div>
+                <img src="https://img.etimg.com/thumb/msid-101188448,width-300,height-225,imgsize-12496,resizemode-75/aviator-game-know-everything-about-the-online-betting-game.jpg" alt="Aviator">
                 <p>Aviator</p>
             </div>
             <div class="game-card" onclick="openGame('dragon-tiger')">
-                <div class="icon">🐉</div>
+                <img src="https://assets.livecasinolist.com/game-images/dragon-tiger.jpg" alt="Dragon Tiger">
                 <p>Dragon Tiger</p>
             </div>
             <div class="game-card" onclick="openGame('7up-down')">
-                <div class="icon">🎲</div>
+                <img src="https://thetechee.com/wp-content/uploads/2021/08/7-up-7-down-game.jpg" alt="7 Up Down">
                 <p>7 Up Down</p>
             </div>
         </div>
     </div>
 
-    <div id="aviator-screen" class="hidden">
+    <div id="aviator-screen">
         <div class="top-bar">
             <button onclick="goHome()">⬅ Back</button>
-            <span>Aviator Live</span>
+            <span>Aviator Live View</span>
         </div>
         <div class="history" id="history-box"></div>
         <div class="game-area aviator-bg">
-            <div class="multiplier" id="multiplier">Waiting...</div>
-            <div class="plane" id="plane">🚀</div>
+            <div class="multiplier" id="multiplier">1.00x</div>
+            <div id="plane-container">
+                <lottie-player src="https://assets4.lottiefiles.com/packages/lf20_at4p66b0.json"  background="transparent"  speed="1"  loop  autoplay></lottie-player>
+            </div>
         </div>
         <div class="control-panel">
-            <input type="number" id="bet-amount" placeholder="Enter Bet">
+            <input type="number" id="bet-amount" placeholder="Enter Bet Amount">
             <button class="bet-btn" onclick="checkAuth()">Place Bet</button>
         </div>
     </div>
@@ -49,8 +54,9 @@
         <div class="modal-content">
             <h2>Login Required</h2>
             <input type="text" placeholder="Mobile Number">
+            <input type="password" placeholder="Password">
             <button class="login-submit" onclick="loginSuccess()">Login</button>
-            <button onclick="closeLogin()">Cancel</button>
+            <button class="close-btn" onclick="closeLogin()">Cancel</button>
         </div>
     </div>
 
