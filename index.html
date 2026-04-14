@@ -3,62 +3,146 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>One To One Bet - All In One</title>
-    
+    <title>121 BET - Full Game Suite</title>
     <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
-
     <style>
-        /* CSS: Design & Animations */
         body { background: #121212; color: white; margin: 0; font-family: sans-serif; overflow-x: hidden; }
         .top-bar { display: flex; justify-content: space-between; padding: 10px; background: #1f1f1f; border-bottom: 2px solid gold; align-items: center; }
         .wallet { background: gold; color: black; padding: 5px 15px; border-radius: 20px; font-weight: bold; }
-
+        
         /* Home Screen */
-        #aviator-screen { display: none; } 
         .game-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding: 15px; }
         .game-card { background: #1f1f1f; border: 1px solid #333; border-radius: 10px; text-align: center; cursor: pointer; overflow: hidden; }
         .game-card img { width: 100%; height: 100px; object-fit: cover; }
         .game-card p { color: gold; font-weight: bold; margin: 10px 0; }
 
-        /* Aviator Game Area */
-        .game-area { height: 250px; position: relative; background: #000; overflow: hidden; }
-        .aviator-bg { background-image: radial-gradient(#222 1px, transparent 1px); background-size: 20px 20px; }
-        .multiplier { font-size: 50px; text-align: center; padding-top: 60px; color: #fff; text-shadow: 2px 2px 4px #000; }
-
-        /* Real Plane Animation */
-        #plane-container { position: absolute; bottom: 10px; left: 10px; width: 80px; height: 80px; transition: 0.1s linear; }
+        /* Game Screens */
+        .game-screen { display: none; min-height: 100vh; }
+        .game-area { height: 260px; position: relative; background: #000; overflow: hidden; border-bottom: 2px solid #333; }
         
-        /* History & Controls */
-        .history { display: flex; gap: 5px; padding: 10px; background: #1a1a1a; overflow-x: auto; height: 35px; }
-        .hist-item { background: #333; color: gold; padding: 4px 10px; border-radius: 10px; font-size: 12px; border: 0.5px solid #555; }
-        .control-panel { padding: 15px; background: #1f1f1f; }
-        #bet-amount { width: 90%; padding: 12px; margin-bottom: 10px; background: #333; color: white; border: 1px solid #555; border-radius: 5px; }
-        .bet-btn { width: 100%; padding: 12px; background: #ff0000; color: white; border: none; border-radius: 5px; font-weight: bold; font-size: 16px; }
+        /* Aviator Animation */
+        #plane-container { position: absolute; bottom: 10px; left: 10px; width: 80px; height: 80px; transition: 0.1s linear; }
+        .multiplier { font-size: 50px; text-align: center; padding-top: 60px; color: #fff; font-weight: bold; }
 
-        /* Login Modal */
-        .modal { display: none; position: fixed; z-index: 100; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); }
-        .modal-content { background: #1f1f1f; margin: 30% auto; padding: 25px; width: 80%; border-radius: 15px; text-align: center; border: 1px solid gold; }
-        .modal-content h2 { color: gold; margin-bottom: 20px; }
-        .modal-content input { width: 90%; padding: 12px; margin: 8px 0; background: #333; border: none; color: white; border-radius: 5px; }
-        .login-submit { background: gold; color: black; border: none; padding: 12px; width: 100%; margin-top: 15px; font-weight: bold; border-radius: 5px; }
+        /* Dragon Tiger / 7 Up Down View */
+        .card-container { display: flex; justify-content: space-around; align-items: center; height: 100%; }
+        .card-box { text-align: center; }
+        .card-img { width: 90px; height: 130px; background: #222; border: 2px solid gold; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 40px; }
+        .win-label { margin-top: 10px; font-weight: bold; color: gold; font-size: 18px; }
+
+        /* Shared UI */
+        .history { display: flex; gap: 5px; padding: 10px; background: #1a1a1a; overflow-x: auto; height: 35px; }
+        .hist-item { background: #333; color: gold; padding: 4px 10px; border-radius: 10px; font-size: 12px; }
+        .control-panel { padding: 15px; background: #1f1f1f; }
+        .bet-input { width: 90%; padding: 12px; margin-bottom: 10px; background: #333; color: white; border: 1px solid #555; border-radius: 5px; }
+        .bet-btn { width: 100%; padding: 12px; background: #ff0000; color: white; border: none; border-radius: 5px; font-weight: bold; }
     </style>
 </head>
 <body>
 
     <div id="home-screen">
         <div class="top-bar">
-            <div class="profile">👤 Guest</div>
-            <div class="app-name" style="font-weight: bold; color: gold;">121 BET</div>
+            <div>👤 Guest</div>
+            <div style="color: gold; font-weight: bold;">121 BET</div>
             <div class="wallet">₹ 0.00</div>
         </div>
-        
         <div class="game-grid">
             <div class="game-card" onclick="openGame('aviator')">
-                <img src="https://img.etimg.com/thumb/msid-101188448,width-300,height-225,imgsize-12496,resizemode-75/aviator.jpg" alt="Aviator">
+                <img src="https://img.etimg.com/thumb/msid-101188448,width-300,height-225,resizemode-75/aviator.jpg">
                 <p>Aviator (Live)</p>
             </div>
-            <div class="game-card" onclick="alert('Dragon Tiger coming soon!')">
-                <img src="https://assets.livecasinolist.com/game-images/dragon-tiger.jpg" alt="Dragon Tiger">
+            <div class="game-card" onclick="openGame('dragon-tiger')">
+                <img src="https://assets.livecasinolist.com/game-images/dragon-tiger.jpg">
+                <p>Dragon Tiger</p>
+            </div>
+            <div class="game-card" onclick="openGame('7up-down')">
+                <img src="https://thetechee.com/wp-content/uploads/2021/08/7-up-7-down-game.jpg">
+                <p>7 Up Down</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="aviator-screen" class="game-screen">
+        <div class="top-bar"><button onclick="goHome()">⬅ Back</button><span>Aviator Live</span><div></div></div>
+        <div class="history" id="avi-hist"></div>
+        <div class="game-area">
+            <div class="multiplier" id="multiplier">1.00x</div>
+            <div id="plane-container">
+                <lottie-player src="https://assets4.lottiefiles.com/packages/lf20_at4p66b0.json" background="transparent" speed="1" loop autoplay></lottie-player>
+            </div>
+        </div>
+        <div class="control-panel">
+            <input type="number" class="bet-input" placeholder="Enter Bet">
+            <button class="bet-btn" onclick="alert('Login Required')">PLACE BET</button>
+        </div>
+    </div>
+
+    <div id="dragon-tiger-screen" class="game-screen">
+        <div class="top-bar"><button onclick="goHome()">⬅ Back</button><span>Dragon vs Tiger</span><div></div></div>
+        <div class="history" id="dt-hist"></div>
+        <div class="game-area">
+            <div class="card-container">
+                <div class="card-box"><div class="card-img" id="dragon-card">🎴</div><div class="win-label">DRAGON</div></div>
+                <div style="font-size: 30px; color: gold;">VS</div>
+                <div class="card-box"><div class="card-img" id="tiger-card">🎴</div><div class="win-label">TIGER</div></div>
+            </div>
+        </div>
+        <div class="control-panel">
+            <button class="bet-btn" onclick="alert('Login Required')">BET ON DRAGON / TIGER</button>
+        </div>
+    </div>
+
+    <script>
+        let aviHist = [1.50, 2.30];
+        let dtHist = ["D", "T", "D"];
+
+        function openGame(id) {
+            document.getElementById('home-screen').style.display = 'none';
+            document.querySelectorAll('.game-screen').forEach(s => s.style.display = 'none');
+            document.getElementById(id + '-screen').style.display = 'block';
+            if(id === 'aviator') startAviator();
+            if(id === 'dragon-tiger') startDragonTiger();
+        }
+
+        function goHome() {
+            location.reload(); // Simplest way to reset animations
+        }
+
+        function startAviator() {
+            let mult = 1.00;
+            let plane = document.getElementById("plane-container");
+            let txt = document.getElementById("multiplier");
+            let crashAt = (Math.random() < 0.7) ? (1.0 + Math.random()) : (2.0 + Math.random() * 5);
+
+            let timer = setInterval(() => {
+                mult += 0.03;
+                txt.innerText = mult.toFixed(2) + "x";
+                plane.style.transform = `translate(${(mult-1)*40}px, ${(mult-1)*-20}px)`;
+                if (mult >= crashAt) {
+                    clearInterval(timer);
+                    txt.style.color = "red";
+                    txt.innerText = mult.toFixed(2) + "x CRASHED";
+                    setTimeout(startAviator, 3000);
+                }
+            }, 100);
+        }
+
+        function startDragonTiger() {
+            let dCard = document.getElementById("dragon-card");
+            let tCard = document.getElementById("tiger-card");
+            dCard.innerText = "🎴"; tCard.innerText = "🎴";
+            
+            setTimeout(() => {
+                let dVal = Math.floor(Math.random() * 13) + 1;
+                let tVal = Math.floor(Math.random() * 13) + 1;
+                dCard.innerText = dVal;
+                tCard.innerText = tVal;
+                setTimeout(startDragonTiger, 4000);
+            }, 2000);
+        }
+    </script>
+</body>
+</html>
                 <p>Dragon Tiger</p>
             </div>
             <div class="game-card" onclick="alert('7 Up Down coming soon!')">
