@@ -3,37 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>121 BET - Full Template</title>
+    <title>121 BET - Fixed</title>
     <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
     <style>
-        /* CSS: Sab kuch sahi jagah set karne ke liye */
-        body { background: #121212; color: white; margin: 0; font-family: sans-serif; }
-        
-        /* Nav Bars */
-        .top-bar { display: flex; justify-content: space-between; padding: 10px; background: #1f1f1f; border-bottom: 2px solid gold; align-items: center; }
+        /* CSS: Layout Fixes */
+        body { background: #121212; color: white; margin: 0; font-family: sans-serif; overflow-x: hidden; }
+        .top-bar { display: flex; justify-content: space-between; padding: 10px; background: #1f1f1f; border-bottom: 2px solid gold; align-items: center; position: sticky; top: 0; z-index: 10; }
         .wallet-btn { background: gold; color: black; padding: 5px 15px; border-radius: 20px; font-weight: bold; }
 
-        /* Screens: Initially hide everything except Home */
-        .game-screen, #login-modal { display: none; }
+        /* Hide Screens by Default */
+        .game-screen { display: none; min-height: 100vh; background: #121212; }
 
         /* Home Page Grid */
+        #home-screen { display: block; }
         .game-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding: 15px; }
         .game-card { background: #1f1f1f; border: 1px solid #333; border-radius: 10px; text-align: center; cursor: pointer; overflow: hidden; }
-        .game-card img { width: 100%; height: 100px; object-fit: cover; background: #333; }
+        .game-card img { width: 100%; height: 100px; object-fit: cover; background: #222; }
         .game-card p { color: gold; font-weight: bold; margin: 10px 0; }
 
-        /* Aviator Live View */
-        .game-area { height: 260px; position: relative; background: #000; overflow: hidden; }
-        .multiplier { font-size: 50px; text-align: center; padding-top: 60px; font-weight: bold; }
-        #plane-container { position: absolute; bottom: 10px; left: 10px; width: 80px; transition: 0.1s linear; }
+        /* Aviator Live View Fix */
+        .game-area { height: 300px; position: relative; background: #000; overflow: hidden; border-bottom: 2px solid #333; display: flex; flex-direction: column; align-items: center; }
+        .multiplier { font-size: 60px; font-weight: bold; margin-top: 60px; z-index: 2; color: white; transition: 0.1s; }
+        #plane-container { position: absolute; bottom: 20px; left: 20px; width: 100px; z-index: 1; transition: 0.1s linear; }
 
-        /* Dragon Tiger View */
-        .vs-container { display: flex; justify-content: space-around; align-items: center; height: 100%; }
-        .card-box { width: 80px; height: 110px; border: 2px solid gold; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 40px; background: #222; }
-
-        /* UI Elements */
+        /* Controls */
         .control-panel { padding: 20px; background: #1f1f1f; text-align: center; }
-        .bet-btn { width: 100%; padding: 15px; background: red; color: white; border: none; font-weight: bold; border-radius: 5px; cursor: pointer; }
+        .bet-btn { width: 100%; padding: 15px; background: #ff0000; color: white; border: none; font-weight: bold; border-radius: 5px; font-size: 18px; }
+        .bet-input { width: 90%; padding: 12px; margin-bottom: 10px; background: #333; color: white; border: 1px solid #555; border-radius: 5px; }
     </style>
 </head>
 <body>
@@ -49,16 +45,94 @@
                 <img src="https://img.etimg.com/thumb/msid-101188448,width-300,resizemode-75/aviator.jpg">
                 <p>Aviator (Live)</p>
             </div>
-            <div class="game-card" onclick="openGame('dragon-tiger')">
+            <div class="game-card" onclick="alert('Dragon Tiger Loading...')">
                 <img src="https://assets.livecasinolist.com/game-images/dragon-tiger.jpg">
                 <p>Dragon Tiger</p>
             </div>
-            <div class="game-card" onclick="openGame('7up-down')">
-                <img src="https://thetechee.com/wp-content/uploads/2021/08/7-up-7-down-game.jpg">
-                <p>7 Up Down</p>
-            </div>
         </div>
     </div>
+
+    <div id="aviator-screen" class="game-screen">
+        <div class="top-bar">
+            <button onclick="goHome()" style="background:none; border:1px solid gold; color:gold; padding:5px 10px; border-radius:5px;">⬅ Back</button>
+            <span style="font-weight:bold;">AVIATOR LIVE</span>
+            <div></div>
+        </div>
+        
+        <div class="game-area">
+            <div class="multiplier" id="main-mult">1.00x</div>
+            <div id="plane-container">
+                <lottie-player src="https://assets4.lottiefiles.com/packages/lf20_at4p66b0.json" background="transparent" speed="1" loop autoplay></lottie-player>
+            </div>
+        </div>
+
+        <div class="control-panel">
+            <input type="number" class="bet-input" placeholder="Enter Amount (Min ₹10)">
+            <button class="bet-btn" onclick="alert('Please Login to Bet')">PLACE BET</button>
+        </div>
+    </div>
+
+    <script>
+        let gameActive = false;
+        let aviLoop;
+
+        function openGame(id) {
+            // Screen Switch Logic
+            document.getElementById('home-screen').style.display = 'none';
+            document.getElementById('aviator-screen').style.display = 'block';
+            
+            if(id === 'aviator') {
+                gameActive = true;
+                startAviatorEngine();
+            }
+        }
+
+        function goHome() {
+            gameActive = false;
+            clearInterval(aviLoop); // Stop game logic
+            document.getElementById('aviator-screen').style.display = 'none';
+            document.getElementById('home-screen').style.display = 'block';
+        }
+
+        function startAviatorEngine() {
+            if(!gameActive) return;
+
+            let mult = 1.00;
+            let txt = document.getElementById('main-mult');
+            let plane = document.getElementById('plane-container');
+            
+            // Reset View
+            txt.innerText = "1.00x";
+            txt.style.color = "white";
+            plane.style.transform = `translate(0px, 0px)`;
+
+            // Random Crash Point
+            let crashPoint = (Math.random() < 0.6) ? (1.0 + Math.random() * 0.5) : (1.5 + Math.random() * 4);
+
+            aviLoop = setInterval(() => {
+                mult += 0.01;
+                txt.innerText = mult.toFixed(2) + "x";
+                
+                // Smooth Plane Movement
+                let x = (mult - 1) * 50;
+                let y = (mult - 1) * -25;
+                plane.style.transform = `translate(${x}px, ${y}px)`;
+
+                if(mult >= crashPoint) {
+                    clearInterval(aviLoop);
+                    txt.innerText = mult.toFixed(2) + "x CRASHED";
+                    txt.style.color = "red";
+                    
+                    // Auto-restart after 3 seconds
+                    setTimeout(() => {
+                        if(gameActive) startAviatorEngine();
+                    }, 3000);
+                }
+            }, 80);
+        }
+    </script>
+</body>
+</html>
 
     <div id="aviator-screen" class="game-screen">
         <div class="top-bar"><button onclick="goHome()">⬅ Back</button><span>Aviator Live</span><div></div></div>
