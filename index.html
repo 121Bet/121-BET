@@ -3,675 +3,121 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>121 BET - New Pro</title>
+    <title>121 BET - Final Fix</title>
     <style>
-        /* CSS Reset & Body */
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { background-color: #ffffff; color: #333; overflow-x: hidden; }
+        /* CSS: Clean & Professional */
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: sans-serif; }
+        body { background: #fff; color: #333; overflow-x: hidden; }
 
-        /* Header Styles based on Template */
-        .header { display: flex; justify-content: space-between; align-items: center; padding: 15px; background: #fff; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
-        .profile-icon { width: 35px; height: 35px; border-radius: 50%; border: 2px solid #ccc; }
-        .logo-text { font-size: 28px; font-weight: 900; font-style: italic; color: #f2a900; text-shadow: 1px 1px 2px rgba(0,0,0,0.1); }
-        .wallet-container { display: flex; align-items: center; gap: 5px; font-weight: bold; }
-        .wallet-icon { font-size: 24px; }
+        /* Navigation Management */
+        .screen { display: none; width: 100%; min-height: 100vh; }
+        .active { display: block; }
 
-        /* Screen Management */
-        .screen { display: none; width: 100vw; min-height: 100vh; }
-        .active-screen { display: block; }
+        /* Header Style */
+        .header { display: flex; justify-content: space-between; padding: 15px; border-bottom: 1px solid #ddd; align-items: center; }
+        .logo { font-size: 26px; font-weight: 900; color: #f2a900; font-style: italic; }
+        .wallet { font-weight: bold; font-size: 14px; }
 
-        /* Game Grid based on Template */
-        .grid-container { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; padding: 20px; margin-top: 10px; }
-        .grid-item { border: 2.5px solid #000; border-radius: 25px; aspect-ratio: 1/1; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; transition: transform 0.2s; position: relative; overflow: hidden; background: #fafafa; }
-        .grid-item:active { transform: scale(0.95); }
-        .grid-item img { width: 80%; height: auto; object-fit: contain; }
-        .grid-item span { margin-top: 10px; font-weight: bold; font-size: 14px; color: #000; }
+        /* Grid Layout */
+        .game-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; padding: 20px; }
+        .grid-item { border: 2.5px solid #000; border-radius: 25px; aspect-ratio: 1/1; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; background: #fff; }
+        .grid-item img { width: 70%; height: auto; object-fit: contain; }
+        .grid-item span { margin-top: 10px; font-weight: bold; font-size: 14px; }
 
-        /* Aviator Game Screen UI */
-        .aviator-header { background: #000; color: #fff; padding: 15px; display: flex; align-items: center; gap: 15px; }
-        .back-btn { background: #f2a900; border: none; padding: 5px 15px; border-radius: 5px; font-weight: bold; cursor: pointer; }
-        .game-area { background: #000; height: 350px; position: relative; overflow: hidden; }
-        .multiplier { position: absolute; width: 100%; text-align: center; top: 40%; font-size: 55px; font-weight: 900; color: #fff; z-index: 10; }
-        #plane-img { position: absolute; bottom: 40px; left: 20px; width: 80px; z-index: 15; transition: transform 0.1s linear; }
+        /* Aviator Game Area */
+        .black-screen { background: #000; color: #fff; }
+        .game-header { padding: 15px; display: flex; align-items: center; gap: 15px; }
+        .back-btn { background: #f2a900; border: none; padding: 5px 15px; border-radius: 5px; font-weight: bold; }
+        
+        .live-view { height: 350px; position: relative; overflow: hidden; background: #000; border-bottom: 2px solid #333; }
+        .multiplier { position: absolute; width: 100%; text-align: center; top: 40%; font-size: 50px; font-weight: 900; z-index: 10; }
+        #plane-img { position: absolute; bottom: 30px; left: 30px; width: 80px; transition: transform 0.1s linear; z-index: 11; }
 
-        /* Betting Section */
-        .betting-box { padding: 25px; background: #f9f9f9; text-align: center; border-radius: 30px 30px 0 0; margin-top: -20px; position: relative; z-index: 20; box-shadow: 0 -5px 15px rgba(0,0,0,0.1); }
-        .bet-input { width: 90%; padding: 15px; border: 2px solid #ddd; border-radius: 12px; margin-bottom: 15px; font-size: 18px; text-align: center; outline: none; }
-        .bet-btn { width: 90%; padding: 15px; background: #e91e63; color: #fff; border: none; border-radius: 12px; font-size: 20px; font-weight: bold; box-shadow: 0 4px 0 #ad1457; }
-        .bet-btn:active { transform: translateY(2px); box-shadow: 0 2px 0 #ad1457; }
+        /* Betting UI */
+        .bet-box { padding: 30px; background: #f1f1f1; border-radius: 30px 30px 0 0; margin-top: -20px; text-align: center; position: relative; z-index: 20; color: #000; }
+        .bet-btn { width: 100%; padding: 15px; background: #e91e63; color: #fff; border: none; border-radius: 12px; font-size: 20px; font-weight: bold; box-shadow: 0 4px 0 #ad1457; }
     </style>
 </head>
 <body>
 
-    <div id="home-screen" class="screen active-screen">
+    <div id="home" class="screen active">
         <div class="header">
-            <div class="profile-icon"></div>
-            <div class="logo-text">121 BET</div>
-            <div class="wallet-container">
-                <span class="wallet-icon">💼</span>
-                <span>₹0.00</span>
-            </div>
+            <div style="width:30px; height:30px; background:#ddd; border-radius:50%;"></div>
+            <div class="logo">121 BET</div>
+            <div class="wallet">💼 ₹0.00</div>
         </div>
-
-        <div class="grid-container">
-            <div class="grid-item" onclick="changeScreen('aviator-screen'); startAviator();">
-                <img src="https://i.ibb.co/LNxv3Dq/plane.png" alt="Aviator">
+        <div class="game-grid">
+            <div class="grid-item" onclick="openGame('aviator')">
+                <img src="https://i.ibb.co/LNxv3Dq/plane.png">
                 <span>Aviator</span>
             </div>
-            <div class="grid-item">
-                <img src="https://cdn-icons-png.flaticon.com/512/3514/3514436.png" alt="Dragon">
-                <span>Coming Soon</span>
+            <div class="grid-item" onclick="openGame('dragon')">
+                <img src="https://cdn-icons-png.flaticon.com/512/3514/3514436.png">
+                <span>Dragon Tiger</span>
             </div>
-            <div class="grid-item"></div>
-            <div class="grid-item"></div>
-            <div class="grid-item"></div>
-            <div class="grid-item"></div>
+            <div class="grid-item"></div><div class="grid-item"></div><div class="grid-item"></div><div class="grid-item"></div>
         </div>
     </div>
 
-    <div id="aviator-screen" class="screen">
-        <div class="aviator-header">
-            <button class="back-btn" onclick="changeScreen('home-screen'); stopAviator();">BACK</button>
+    <div id="aviator" class="screen black-screen">
+        <div class="game-header">
+            <button class="back-btn" onclick="closeGame()">BACK</button>
             <span>AVIATOR LIVE</span>
         </div>
-
-        <div class="game-area">
-            <div class="multiplier" id="mult-text">1.00x</div>
-            <img id="plane-img" src="https://i.ibb.co/LNxv3Dq/plane.png" alt="Plane">
+        <div class="live-view">
+            <div class="multiplier" id="mult">1.00x</div>
+            <img id="plane-img" src="https://i.ibb.co/LNxv3Dq/plane.png">
         </div>
+        <div class="bet-box">
+            <input type="number" placeholder="Enter Amount" style="width:100%; padding:12px; margin-bottom:15px; border-radius:8px; border:1px solid #ccc;">
+            <button class="bet-btn">BET</button>
+        </div>
+    </div>
 
-        <div class="betting-box">
-            <input type="number" class="bet-input" placeholder="Enter Amount (₹)">
-            <button class="bet-btn" onclick="alert('Waiting for next round...')">BET</button>
+    <div id="dragon" class="screen black-screen">
+        <div class="game-header">
+            <button class="back-btn" onclick="closeGame()">BACK</button>
+            <span>DRAGON VS TIGER</span>
+        </div>
+        <div class="live-view" style="display:flex; justify-content:center; align-items:center; font-size:24px;">
+            Coming Soon!
         </div>
     </div>
 
     <script>
-        let gameOn = false;
-        let aviatorInterval;
-
-        // Screen Switcher Logic - Important to stop "Kachra"
-        function changeScreen(id) {
-            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active-screen'));
-            document.getElementById(id).classList.add('active-screen');
-            window.scrollTo(0,0);
-        }
-
-        function startAviator() {
-            gameOn = true;
-            let val = 1.00;
-            const text = document.getElementById('mult-text');
-            const plane = document.getElementById('plane-img');
-
-            // Reset UI
-            text.style.color = "white";
-            plane.style.transform = `translate(0, 0)`;
-
-            let limit = (Math.random() * 2.5 + 1.1).toFixed(2);
-
-            aviatorInterval = setInterval(() => {
-                if(!gameOn) return clearInterval(aviatorInterval);
-
-                val += 0.01;
-                text.innerText = val.toFixed(2) + "x";
-
-                // Movement calculation
-                let moveX = (val - 1) * 70;
-                let moveY = (val - 1) * -40;
-                plane.style.transform = `translate(${moveX}px, ${moveY}px)`;
-
-                if(val >= limit) {
-                    clearInterval(aviatorInterval);
-                    text.innerText = "FLEW AWAY!";
-                    text.style.color = "#ff4444";
-                    
-                    setTimeout(() => {
-                        if(gameOn) startAviator();
-                    }, 3000);
-                }
-            }, 80);
-        }
-
-        function stopAviator() {
-            gameOn = false;
-            clearInterval(aviatorInterval);
-        }
-    </script>
-</body>
-</html>
-    <div id="screen-aviator" class="page">
-        <div class="top-bar">
-            <button class="back-nav" onclick="closeGame()">⬅ Back</button>
-            <span style="font-size: 14px; font-weight: bold;">AVIATOR LIVE</span>
-            <div class="balance-tag">₹ 0.00</div>
-        </div>
-
-        <div class="aviator-container">
-            <div class="crash-value" id="count-text">1.00x</div>
-            <img id="airplane" src="https://i.ibb.co/LNxv3Dq/plane.png" alt="Plane">
-        </div>
-
-        <div class="controls">
-            <input type="number" placeholder="Enter Amount (Min ₹10)">
-            <button class="bet-now" onclick="alert('Bet Placed! Waiting for result...')">PLACE BET</button>
-        </div>
-    </div>
-
-    <script>
-        let isRunning = false;
-        let loopTimer;
-
-        // Function to switch screens
-        function openGame(game) {
-            if(game === 'aviator') {
-                document.getElementById('screen-home').classList.remove('active');
-                document.getElementById('screen-aviator').classList.add('active');
-                startLogic();
-            }
+        let loop;
+        function openGame(id) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            if(id === 'aviator') startAviator();
         }
 
         function closeGame() {
-            isRunning = false;
-            clearInterval(loopTimer);
-            document.getElementById('screen-aviator').classList.remove('active');
-            document.getElementById('screen-home').classList.add('active');
-        }
-
-        function startLogic() {
-            isRunning = true;
-            let count = 1.00;
-            const text = document.getElementById('count-text');
-            const plane = document.getElementById('airplane');
-
-            // Reset UI
-            text.style.color = "white";
-            plane.style.transform = `translate(0, 0)`;
-
-            // Fake crash point for now (Admin panel baad me yaha connect hoga)
-            let crashPoint = (Math.random() * 2 + 1.1).toFixed(2);
-
-            loopTimer = setInterval(() => {
-                if(!isRunning) return clearInterval(loopTimer);
-
-                count += 0.01;
-                text.innerText = count.toFixed(2) + "x";
-
-                // Movement math
-                let x = (count - 1) * 60;
-                let y = (count - 1) * -35;
-                plane.style.transform = `translate(${x}px, ${y}px)`;
-
-                if(count >= crashPoint) {
-                    clearInterval(loopTimer);
-                    text.innerText = "CRASHED!";
-                    text.style.color = "#ff0000";
-                    
-                    // Restart after 3 seconds
-                    setTimeout(() => { if(isRunning) startLogic(); }, 3000);
-                }
-            }, 80);
-        }
-    </script>
-</body>
-</html>
-        function closeGame() {
-            isPlaying = false;
-            document.getElementById('aviator').classList.remove('active');
+            clearInterval(loop);
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
             document.getElementById('home').classList.add('active');
         }
 
-        function startLoop() {
-            if(!isPlaying) return;
-            let m = 1.00;
-            let display = document.getElementById('m-display');
-            let plane = document.getElementById('plane');
-            
-            // ADMIN CONTROL FETCH (Simulated)
-            let crashLimit = localStorage.getItem('next_crash') || (1.1 + Math.random() * 3);
-
-            let timer = setInterval(() => {
-                m += 0.01;
-                display.innerText = m.toFixed(2) + "x";
-                plane.style.transform = `translate(${(m-1)*50}px, ${(m-1)*-20}px)`;
-
-                if(m >= parseFloat(crashLimit)) {
-                    clearInterval(timer);
-                    display.innerText = "FLEW AWAY!";
-                    display.style.color = "red";
-                    setTimeout(() => { 
-                        display.style.color = "white"; 
-                        if(isPlaying) startLoop(); 
-                    }, 3000);
-                }
-            }, 80);
-        }
-    </script>
-</body>
-</html>
-                <p>Aviator (Live)</p>
-            </div>
-            <div class="game-card" onclick="alert('Dragon Tiger Loading...')">
-                <img src="https://assets.livecasinolist.com/game-images/dragon-tiger.jpg">
-                <p>Dragon Tiger</p>
-            </div>
-        </div>
-    </div>
-
-    <div id="aviator-screen" class="game-screen">
-        <div class="top-bar">
-            <button onclick="goHome()" style="background:transparent; border:1px solid gold; color:gold; padding:5px; border-radius:5px;">⬅ Back</button>
-            <span>AVIATOR LIVE</span>
-            <div class="wallet">₹ 0.00</div>
-        </div>
-        
-        <div class="aviator-container">
-            <div class="multiplier" id="mult-text">1.00x</div>
-            <img id="plane" src="https://i.ibb.co/LNxv3Dq/plane.png" alt="Aviator Plane">
-            <canvas id="graphCanvas" style="position: absolute; top:0; left:0; width:100%; height:100%;"></canvas>
-        </div>
-
-        <div class="bet-area">
-            <input type="number" class="input-box" placeholder="Enter Bet Amount (Min ₹10)">
-            <button class="btn-bet" onclick="alert('Login Required!')">PLACE BET</button>
-        </div>
-    </div>
-
-    <script>
-        let isRunning = false;
-        let aviInterval;
-
-        function startGame(id) {
-            document.getElementById('home-screen').style.display = 'none';
-            document.getElementById('aviator-screen').style.display = 'block';
-            if(id === 'aviator') {
-                isRunning = true;
-                runAviator();
-            }
-        }
-
-        function goHome() {
-            isRunning = false;
-            clearInterval(aviInterval);
-            document.getElementById('aviator-screen').style.display = 'none';
-            document.getElementById('home-screen').style.display = 'block';
-        }
-
-        function runAviator() {
-            if(!isRunning) return;
-
-            let m = 1.00;
-            let txt = document.getElementById('mult-text');
-            let plane = document.getElementById('plane');
-            let crashPoint = (Math.random() < 0.7) ? (1.1 + Math.random()) : (2.0 + Math.random() * 5);
-
-            // Reset Position
-            m = 1.00;
-            txt.style.color = "white";
-            plane.style.transform = `translate(0px, 0px)`;
-
-            aviInterval = setInterval(() => {
-                m += 0.01;
-                txt.innerText = m.toFixed(2) + "x";
-
-                // Move plane diagonally
-                let moveX = (m - 1) * 60;
-                let moveY = (m - 1) * -30;
-                plane.style.transform = `translate(${moveX}px, ${moveY}px)`;
-
-                if(m >= crashPoint) {
-                    clearInterval(aviInterval);
-                    txt.innerText = "FLEW AWAY!";
-                    txt.style.color = "red";
-                    setTimeout(() => { if(isRunning) runAviator(); }, 3000);
-                }
-            }, 70);
-        }
-    </script>
-</body>
-</html>
-        <div class="game-area">
-            <div class="multiplier" id="main-mult">1.00x</div>
-            <div id="plane-container">
-                <lottie-player src="https://assets4.lottiefiles.com/packages/lf20_at4p66b0.json" background="transparent" speed="1" loop autoplay></lottie-player>
-            </div>
-        </div>
-
-        <div class="control-panel">
-            <input type="number" class="bet-input" placeholder="Enter Amount (Min ₹10)">
-            <button class="bet-btn" onclick="alert('Please Login to Bet')">PLACE BET</button>
-        </div>
-    </div>
-
-    <script>
-        let gameActive = false;
-        let aviLoop;
-
-        function openGame(id) {
-            // Screen Switch Logic
-            document.getElementById('home-screen').style.display = 'none';
-            document.getElementById('aviator-screen').style.display = 'block';
-            
-            if(id === 'aviator') {
-                gameActive = true;
-                startAviatorEngine();
-            }
-        }
-
-        function goHome() {
-            gameActive = false;
-            clearInterval(aviLoop); // Stop game logic
-            document.getElementById('aviator-screen').style.display = 'none';
-            document.getElementById('home-screen').style.display = 'block';
-        }
-
-        function startAviatorEngine() {
-            if(!gameActive) return;
-
-            let mult = 1.00;
-            let txt = document.getElementById('main-mult');
-            let plane = document.getElementById('plane-container');
-            
-            // Reset View
-            txt.innerText = "1.00x";
-            txt.style.color = "white";
-            plane.style.transform = `translate(0px, 0px)`;
-
-            // Random Crash Point
-            let crashPoint = (Math.random() < 0.6) ? (1.0 + Math.random() * 0.5) : (1.5 + Math.random() * 4);
-
-            aviLoop = setInterval(() => {
-                mult += 0.01;
-                txt.innerText = mult.toFixed(2) + "x";
-                
-                // Smooth Plane Movement
-                let x = (mult - 1) * 50;
-                let y = (mult - 1) * -25;
-                plane.style.transform = `translate(${x}px, ${y}px)`;
-
-                if(mult >= crashPoint) {
-                    clearInterval(aviLoop);
-                    txt.innerText = mult.toFixed(2) + "x CRASHED";
-                    txt.style.color = "red";
-                    
-                    // Auto-restart after 3 seconds
-                    setTimeout(() => {
-                        if(gameActive) startAviatorEngine();
-                    }, 3000);
-                }
-            }, 80);
-        }
-    </script>
-</body>
-</html>
-
-    <div id="aviator-screen" class="game-screen">
-        <div class="top-bar"><button onclick="goHome()">⬅ Back</button><span>Aviator Live</span><div></div></div>
-        <div class="game-area">
-            <div class="multiplier" id="avi-mult">1.00x</div>
-            <div id="plane-container">
-                <lottie-player src="https://assets4.lottiefiles.com/packages/lf20_at4p66b0.json" background="transparent" speed="1" loop autoplay></lottie-player>
-            </div>
-        </div>
-        <div class="control-panel">
-            <button class="bet-btn" onclick="alert('Login Required')">PLACE BET</button>
-        </div>
-    </div>
-
-    <div id="dragon-tiger-screen" class="game-screen">
-        <div class="top-bar"><button onclick="goHome()">⬅ Back</button><span>Dragon vs Tiger</span><div></div></div>
-        <div class="game-area">
-            <div class="vs-container">
-                <div><div class="card-box" id="d-card">🐉</div><p>DRAGON</p></div>
-                <div style="font-size: 24px; color: gold;">VS</div>
-                <div><div class="card-box" id="t-card">🐯</div><p>TIGER</p></div>
-            </div>
-        </div>
-        <div class="control-panel">
-            <button class="bet-btn">BET ON D / T</button>
-        </div>
-    </div>
-
-    <script>
-        // Game Logic: Clicking per switch karna
-        function openGame(gameId) {
-            document.getElementById('home-screen').style.display = 'none';
-            document.querySelectorAll('.game-screen').forEach(s => s.style.display = 'none');
-            
-            let screen = document.getElementById(gameId + '-screen');
-            if(screen) {
-                screen.style.display = 'block';
-                if(gameId === 'aviator') startAviator();
-            } else {
-                alert(gameId + " is coming soon!");
-                goHome();
-            }
-        }
-
-        function goHome() {
-            document.querySelectorAll('.game-screen').forEach(s => s.style.display = 'none');
-            document.getElementById('home-screen').style.display = 'block';
-        }
-
         function startAviator() {
             let m = 1.00;
-            let txt = document.getElementById('avi-mult');
-            let plane = document.getElementById('plane-container');
-            let crash = 1.2 + Math.random() * 3;
+            const text = document.getElementById('mult');
+            const plane = document.getElementById('plane-img');
+            let crash = (Math.random() * 2 + 1.1).toFixed(2);
 
-            let loop = setInterval(() => {
-                m += 0.02;
-                txt.innerText = m.toFixed(2) + "x";
-                plane.style.transform = `translate(${(m-1)*30}px, ${(m-1)*-15}px)`;
-                
+            text.style.color = "white";
+            loop = setInterval(() => {
+                m += 0.01;
+                text.innerText = m.toFixed(2) + "x";
+                plane.style.transform = `translate(${(m-1)*60}px, ${(m-1)*-30}px)`;
+
                 if(m >= crash) {
                     clearInterval(loop);
-                    txt.style.color = "red";
-                    txt.innerText = m.toFixed(2) + "x CRASHED";
-                    setTimeout(() => { 
-                        txt.style.color = "white"; 
-                        if(document.getElementById('aviator-screen').style.display === 'block') startAviator(); 
-                    }, 3000);
-                }
-            }, 100);
-        }
-    </script>
-</body>
-</html>
-        </div>
-    </div>
-
-    <div id="aviator-screen" class="game-screen">
-        <div class="top-bar"><button onclick="goHome()">⬅ Back</button><span>Aviator Live</span><div></div></div>
-        <div class="history" id="avi-hist"></div>
-        <div class="game-area">
-            <div class="multiplier" id="multiplier">1.00x</div>
-            <div id="plane-container">
-                <lottie-player src="https://assets4.lottiefiles.com/packages/lf20_at4p66b0.json" background="transparent" speed="1" loop autoplay></lottie-player>
-            </div>
-        </div>
-        <div class="control-panel">
-            <input type="number" class="bet-input" placeholder="Enter Bet">
-            <button class="bet-btn" onclick="alert('Login Required')">PLACE BET</button>
-        </div>
-    </div>
-
-    <div id="dragon-tiger-screen" class="game-screen">
-        <div class="top-bar"><button onclick="goHome()">⬅ Back</button><span>Dragon vs Tiger</span><div></div></div>
-        <div class="history" id="dt-hist"></div>
-        <div class="game-area">
-            <div class="card-container">
-                <div class="card-box"><div class="card-img" id="dragon-card">🎴</div><div class="win-label">DRAGON</div></div>
-                <div style="font-size: 30px; color: gold;">VS</div>
-                <div class="card-box"><div class="card-img" id="tiger-card">🎴</div><div class="win-label">TIGER</div></div>
-            </div>
-        </div>
-        <div class="control-panel">
-            <button class="bet-btn" onclick="alert('Login Required')">BET ON DRAGON / TIGER</button>
-        </div>
-    </div>
-
-    <script>
-        let aviHist = [1.50, 2.30];
-        let dtHist = ["D", "T", "D"];
-
-        function openGame(id) {
-            document.getElementById('home-screen').style.display = 'none';
-            document.querySelectorAll('.game-screen').forEach(s => s.style.display = 'none');
-            document.getElementById(id + '-screen').style.display = 'block';
-            if(id === 'aviator') startAviator();
-            if(id === 'dragon-tiger') startDragonTiger();
-        }
-
-        function goHome() {
-            location.reload(); // Simplest way to reset animations
-        }
-
-        function startAviator() {
-            let mult = 1.00;
-            let plane = document.getElementById("plane-container");
-            let txt = document.getElementById("multiplier");
-            let crashAt = (Math.random() < 0.7) ? (1.0 + Math.random()) : (2.0 + Math.random() * 5);
-
-            let timer = setInterval(() => {
-                mult += 0.03;
-                txt.innerText = mult.toFixed(2) + "x";
-                plane.style.transform = `translate(${(mult-1)*40}px, ${(mult-1)*-20}px)`;
-                if (mult >= crashAt) {
-                    clearInterval(timer);
-                    txt.style.color = "red";
-                    txt.innerText = mult.toFixed(2) + "x CRASHED";
+                    text.innerText = "FLEW AWAY!";
+                    text.style.color = "red";
                     setTimeout(startAviator, 3000);
                 }
-            }, 100);
-        }
-
-        function startDragonTiger() {
-            let dCard = document.getElementById("dragon-card");
-            let tCard = document.getElementById("tiger-card");
-            dCard.innerText = "🎴"; tCard.innerText = "🎴";
-            
-            setTimeout(() => {
-                let dVal = Math.floor(Math.random() * 13) + 1;
-                let tVal = Math.floor(Math.random() * 13) + 1;
-                dCard.innerText = dVal;
-                tCard.innerText = tVal;
-                setTimeout(startDragonTiger, 4000);
-            }, 2000);
+            }, 80);
         }
     </script>
-</body>
-</html>
-                <p>Dragon Tiger</p>
-            </div>
-            <div class="game-card" onclick="alert('7 Up Down coming soon!')">
-                <img src="https://thetechee.com/wp-content/uploads/2021/08/7-up-7-down-game.jpg" alt="7 Up Down">
-                <p>7 Up Down</p>
-            </div>
-        </div>
-    </div>
-
-    <div id="aviator-screen">
-        <div class="top-bar">
-            <button onclick="goHome()" style="background:none; color:gold; border:1px solid gold; padding:5px 10px; border-radius:5px;">⬅ Back</button>
-            <span style="font-weight: bold;">AVIATOR GUEST VIEW</span>
-            <div></div>
-        </div>
-        
-        <div class="history" id="history-box">
-            </div>
-
-        <div class="game-area aviator-bg">
-            <div class="multiplier" id="multiplier">1.00x</div>
-            <div id="plane-container">
-                <lottie-player src="https://assets4.lottiefiles.com/packages/lf20_at4p66b0.json" background="transparent" speed="1" loop autoplay></lottie-player>
-            </div>
-        </div>
-
-        <div class="control-panel">
-            <input type="number" id="bet-amount" placeholder="Enter Bet Amount (Min ₹10)">
-            <button class="bet-btn" onclick="checkAuth()">PLACE BET</button>
-        </div>
-    </div>
-
-    <div id="login-modal" class="modal">
-        <div class="modal-content">
-            <h2>LOGIN REQUIRED</h2>
-            <p style="font-size: 13px; color: #aaa;">Bet lagane ke liye login karein</p>
-            <input type="text" placeholder="Mobile Number">
-            <input type="password" placeholder="Password">
-            <button class="login-submit" onclick="alert('Login system connecting to Firebase soon...')">LOGIN</button>
-            <button onclick="closeLogin()" style="background:none; color:#777; border:none; margin-top:10px;">Cancel</button>
-        </div>
-    </div>
-
-    <script>
-        // JavaScript: Logic & Switching
-        let historyList = [1.54, 2.10, 1.05, 4.30, 1.12];
-
-        function openGame(gameId) {
-            document.getElementById('home-screen').style.display = 'none';
-            document.getElementById('aviator-screen').style.display = 'block';
-            renderHistory();
-            startAviatorLoop();
-        }
-
-        function goHome() {
-            document.getElementById('aviator-screen').style.display = 'none';
-            document.getElementById('home-screen').style.display = 'block';
-        }
-
-        function startAviatorLoop() {
-            let mult = 1.00;
-            let plane = document.getElementById("plane-container");
-            let txt = document.getElementById("multiplier");
-            
-            txt.style.color = "white";
-            // 70% chance to crash before 1.50x (Admin/Loss Logic)
-            let crashAt = (Math.random() < 0.7) ? (1.0 + Math.random() * 0.5) : (1.5 + Math.random() * 5);
-
-            let timer = setInterval(() => {
-                mult += 0.02;
-                txt.innerText = mult.toFixed(2) + "x";
-                
-                // Animation Movement
-                let moveX = (mult - 1) * 40; 
-                let moveY = (mult - 1) * -20;
-                plane.style.transform = `translate(${moveX}px, ${moveY}px)`;
-
-                if (mult >= crashAt) {
-                    clearInterval(timer);
-                    txt.innerText = mult.toFixed(2) + "x CRASHED";
-                    txt.style.color = "red";
-                    
-                    historyList.unshift(mult.toFixed(2));
-                    if(historyList.length > 10) historyList.pop();
-                    renderHistory();
-                    
-                    setTimeout(() => {
-                        if (document.getElementById('aviator-screen').style.display === 'block') {
-                            startAviatorLoop();
-                        }
-                    }, 3000);
-                }
-            }, 100);
-        }
-
-        function renderHistory() {
-            let box = document.getElementById("history-box");
-            box.innerHTML = historyList.map(h => `<span class="hist-item">${h}x</span>`).join('');
-        }
-
-        function checkAuth() {
-            document.getElementById("login-modal").style.display = "block";
-        }
-
-        function closeLogin() {
-            document.getElementById("login-modal").style.display = "none";
-        }
-    </script>
-</body>
-</html>
-
-    <script src="script.js"></script>
 </body>
 </html>
