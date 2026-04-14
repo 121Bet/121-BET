@@ -3,29 +3,65 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>One To One Bet - Real Animation</title>
-    <link rel="stylesheet" href="style.css">
+    <title>One To One Bet - All In One</title>
+    
     <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+
+    <style>
+        /* CSS: Design & Animations */
+        body { background: #121212; color: white; margin: 0; font-family: sans-serif; overflow-x: hidden; }
+        .top-bar { display: flex; justify-content: space-between; padding: 10px; background: #1f1f1f; border-bottom: 2px solid gold; align-items: center; }
+        .wallet { background: gold; color: black; padding: 5px 15px; border-radius: 20px; font-weight: bold; }
+
+        /* Home Screen */
+        #aviator-screen { display: none; } 
+        .game-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding: 15px; }
+        .game-card { background: #1f1f1f; border: 1px solid #333; border-radius: 10px; text-align: center; cursor: pointer; overflow: hidden; }
+        .game-card img { width: 100%; height: 100px; object-fit: cover; }
+        .game-card p { color: gold; font-weight: bold; margin: 10px 0; }
+
+        /* Aviator Game Area */
+        .game-area { height: 250px; position: relative; background: #000; overflow: hidden; }
+        .aviator-bg { background-image: radial-gradient(#222 1px, transparent 1px); background-size: 20px 20px; }
+        .multiplier { font-size: 50px; text-align: center; padding-top: 60px; color: #fff; text-shadow: 2px 2px 4px #000; }
+
+        /* Real Plane Animation */
+        #plane-container { position: absolute; bottom: 10px; left: 10px; width: 80px; height: 80px; transition: 0.1s linear; }
+        
+        /* History & Controls */
+        .history { display: flex; gap: 5px; padding: 10px; background: #1a1a1a; overflow-x: auto; height: 35px; }
+        .hist-item { background: #333; color: gold; padding: 4px 10px; border-radius: 10px; font-size: 12px; border: 0.5px solid #555; }
+        .control-panel { padding: 15px; background: #1f1f1f; }
+        #bet-amount { width: 90%; padding: 12px; margin-bottom: 10px; background: #333; color: white; border: 1px solid #555; border-radius: 5px; }
+        .bet-btn { width: 100%; padding: 12px; background: #ff0000; color: white; border: none; border-radius: 5px; font-weight: bold; font-size: 16px; }
+
+        /* Login Modal */
+        .modal { display: none; position: fixed; z-index: 100; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); }
+        .modal-content { background: #1f1f1f; margin: 30% auto; padding: 25px; width: 80%; border-radius: 15px; text-align: center; border: 1px solid gold; }
+        .modal-content h2 { color: gold; margin-bottom: 20px; }
+        .modal-content input { width: 90%; padding: 12px; margin: 8px 0; background: #333; border: none; color: white; border-radius: 5px; }
+        .login-submit { background: gold; color: black; border: none; padding: 12px; width: 100%; margin-top: 15px; font-weight: bold; border-radius: 5px; }
+    </style>
 </head>
 <body>
 
     <div id="home-screen">
         <div class="top-bar">
             <div class="profile">👤 Guest</div>
-            <div class="app-name">ONE TO ONE BET</div>
+            <div class="app-name" style="font-weight: bold; color: gold;">121 BET</div>
             <div class="wallet">₹ 0.00</div>
         </div>
         
         <div class="game-grid">
             <div class="game-card" onclick="openGame('aviator')">
-                <img src="https://img.etimg.com/thumb/msid-101188448,width-300,height-225,imgsize-12496,resizemode-75/aviator-game-know-everything-about-the-online-betting-game.jpg" alt="Aviator">
-                <p>Aviator</p>
+                <img src="https://img.etimg.com/thumb/msid-101188448,width-300,height-225,imgsize-12496,resizemode-75/aviator.jpg" alt="Aviator">
+                <p>Aviator (Live)</p>
             </div>
-            <div class="game-card" onclick="openGame('dragon-tiger')">
+            <div class="game-card" onclick="alert('Dragon Tiger coming soon!')">
                 <img src="https://assets.livecasinolist.com/game-images/dragon-tiger.jpg" alt="Dragon Tiger">
                 <p>Dragon Tiger</p>
             </div>
-            <div class="game-card" onclick="openGame('7up-down')">
+            <div class="game-card" onclick="alert('7 Up Down coming soon!')">
                 <img src="https://thetechee.com/wp-content/uploads/2021/08/7-up-7-down-game.jpg" alt="7 Up Down">
                 <p>7 Up Down</p>
             </div>
@@ -34,31 +70,105 @@
 
     <div id="aviator-screen">
         <div class="top-bar">
-            <button onclick="goHome()">⬅ Back</button>
-            <span>Aviator Live View</span>
+            <button onclick="goHome()" style="background:none; color:gold; border:1px solid gold; padding:5px 10px; border-radius:5px;">⬅ Back</button>
+            <span style="font-weight: bold;">AVIATOR GUEST VIEW</span>
+            <div></div>
         </div>
-        <div class="history" id="history-box"></div>
+        
+        <div class="history" id="history-box">
+            </div>
+
         <div class="game-area aviator-bg">
             <div class="multiplier" id="multiplier">1.00x</div>
             <div id="plane-container">
-                <lottie-player src="https://assets4.lottiefiles.com/packages/lf20_at4p66b0.json"  background="transparent"  speed="1"  loop  autoplay></lottie-player>
+                <lottie-player src="https://assets4.lottiefiles.com/packages/lf20_at4p66b0.json" background="transparent" speed="1" loop autoplay></lottie-player>
             </div>
         </div>
+
         <div class="control-panel">
-            <input type="number" id="bet-amount" placeholder="Enter Bet Amount">
-            <button class="bet-btn" onclick="checkAuth()">Place Bet</button>
+            <input type="number" id="bet-amount" placeholder="Enter Bet Amount (Min ₹10)">
+            <button class="bet-btn" onclick="checkAuth()">PLACE BET</button>
         </div>
     </div>
 
     <div id="login-modal" class="modal">
         <div class="modal-content">
-            <h2>Login Required</h2>
+            <h2>LOGIN REQUIRED</h2>
+            <p style="font-size: 13px; color: #aaa;">Bet lagane ke liye login karein</p>
             <input type="text" placeholder="Mobile Number">
             <input type="password" placeholder="Password">
-            <button class="login-submit" onclick="loginSuccess()">Login</button>
-            <button class="close-btn" onclick="closeLogin()">Cancel</button>
+            <button class="login-submit" onclick="alert('Login system connecting to Firebase soon...')">LOGIN</button>
+            <button onclick="closeLogin()" style="background:none; color:#777; border:none; margin-top:10px;">Cancel</button>
         </div>
     </div>
+
+    <script>
+        // JavaScript: Logic & Switching
+        let historyList = [1.54, 2.10, 1.05, 4.30, 1.12];
+
+        function openGame(gameId) {
+            document.getElementById('home-screen').style.display = 'none';
+            document.getElementById('aviator-screen').style.display = 'block';
+            renderHistory();
+            startAviatorLoop();
+        }
+
+        function goHome() {
+            document.getElementById('aviator-screen').style.display = 'none';
+            document.getElementById('home-screen').style.display = 'block';
+        }
+
+        function startAviatorLoop() {
+            let mult = 1.00;
+            let plane = document.getElementById("plane-container");
+            let txt = document.getElementById("multiplier");
+            
+            txt.style.color = "white";
+            // 70% chance to crash before 1.50x (Admin/Loss Logic)
+            let crashAt = (Math.random() < 0.7) ? (1.0 + Math.random() * 0.5) : (1.5 + Math.random() * 5);
+
+            let timer = setInterval(() => {
+                mult += 0.02;
+                txt.innerText = mult.toFixed(2) + "x";
+                
+                // Animation Movement
+                let moveX = (mult - 1) * 40; 
+                let moveY = (mult - 1) * -20;
+                plane.style.transform = `translate(${moveX}px, ${moveY}px)`;
+
+                if (mult >= crashAt) {
+                    clearInterval(timer);
+                    txt.innerText = mult.toFixed(2) + "x CRASHED";
+                    txt.style.color = "red";
+                    
+                    historyList.unshift(mult.toFixed(2));
+                    if(historyList.length > 10) historyList.pop();
+                    renderHistory();
+                    
+                    setTimeout(() => {
+                        if (document.getElementById('aviator-screen').style.display === 'block') {
+                            startAviatorLoop();
+                        }
+                    }, 3000);
+                }
+            }, 100);
+        }
+
+        function renderHistory() {
+            let box = document.getElementById("history-box");
+            box.innerHTML = historyList.map(h => `<span class="hist-item">${h}x</span>`).join('');
+        }
+
+        function checkAuth() {
+            document.getElementById("login-modal").style.display = "block";
+        }
+
+        function closeLogin() {
+            document.getElementById("login-modal").style.display = "none";
+        }
+    </script>
+</body>
+</html>
 
     <script src="script.js"></script>
 </body>
