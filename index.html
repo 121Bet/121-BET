@@ -3,35 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>One To One Bet</title>
+    <title>One To One Bet - Live Guest View</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="top-bar">
-        <div class="profile">👤</div>
-        <div class="app-name">ONE TO ONE BET</div>
-        <div class="wallet" id="balance">₹ 0.00</div>
+        <div class="profile">👤 Guest</div>
+        <div class="app-name">LIVE VIEW</div>
+        <div class="wallet" id="balance">Balance: ₹ 0.00</div>
     </div>
 
-    <div class="game-grid">
-        <div class="game-card" onclick="playGame('Aviator')">
-            <div class="game-icon">🚀</div>
-            <p>Aviator</p>
+    <div class="game-area aviator-bg">
+        <div class="history" id="history-box">
+            </div>
+        <div class="multiplier" id="multiplier">Waiting...</div>
+        <div class="plane-container">
+            <div class="plane" id="plane">🚀</div>
         </div>
-        <div class="game-card" onclick="playGame('Dragon Tiger')">
-            <div class="game-icon">🐉</div>
-            <p>Dragon Tiger</p>
-        </div>
-        <div class="game-card" onclick="playGame('7 Up Down')">
-            <div class="game-icon">🎲</div>
-            <p>7 Up Down</p>
-        </div>
-        </div>
+    </div>
 
-    <div class="bottom-nav">
-        <div class="nav-item">🏠 Home</div>
-        <div class="nav-item">💰 Withdraw</div>
-        <div class="nav-item">🎁 Offer</div>
+    <div class="control-panel">
+        <input type="number" id="bet-amount" placeholder="Enter Bet Amount">
+        <button class="bet-btn" onclick="checkAuth()">Place Bet</button>
+    </div>
+
+    <div id="login-modal" class="modal">
+        <div class="modal-content">
+            <h2>Login Required</h2>
+            <p>Bet lagane ke liye login ya signup karein.</p>
+            <input type="text" placeholder="Mobile Number">
+            <input type="password" placeholder="Password">
+            <button class="login-submit" onclick="closeLogin()">Login</button>
+            <button class="close-btn" onclick="closeLogin()">Cancel</button>
+        </div>
     </div>
 
     <script src="script.js"></script>
