@@ -1,5 +1,26 @@
-.hidden { display: none !important; }
-.game-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding: 20px; }
-.game-card { background: #2a2a2a; padding: 20px; border-radius: 15px; text-align: center; color: gold; border: 1px solid #444; }
-.icon { font-size: 40px; }
-/* Purana modal aur game-area ka code waisa hi rehne den */
+/* गेम को शुरुआत में छिपाने के लिए */
+#aviator-screen {
+    display: none; 
+}
+
+/* जब स्क्रीन 'active' हो तब दिखाने के लिए */
+.active {
+    display: block !important;
+}
+
+/* होम स्क्रीन की ग्रिड स्टाइलिंग */
+.game-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    padding: 10px;
+}
+
+.game-card {
+    background: #1f1f1f;
+    border: 1px solid #ffd700;
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+}
