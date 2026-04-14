@@ -1,68 +1,55 @@
-let isLoggedIn = false; // By default user login nahi hai
-let balance = 0;
-let history = [1.20, 5.40, 1.05, 2.30, 1.15]; // Fake pichli history
+let isLoggedIn = false;
+let history = [1.2, 2.5, 1.05];
 
-// Page load hote hi game aur history shuru karein
-window.onload = function() {
-    updateHistory();
-    startLiveCycle();
-};
-
-function updateHistory() {
-    let box = document.getElementById("history-box");
-    box.innerHTML = "";
-    history.forEach(val => {
-        box.innerHTML += `<span class="hist-item">${val}x</span>`;
-    });
+function openGame(gameId) {
+    if (gameId === 'aviator') {
+        document.getElementById('home-screen').classList.add('hidden');
+        document.getElementById('aviator-screen').classList.remove('hidden');
+        startAviatorCycle(); // Game tabhi shuru hoga jab click karenge
+    } else {
+        alert(gameId + " is coming soon!");
+    }
 }
 
-function startLiveCycle() {
+function goHome() {
+    document.getElementById('aviator-screen').classList.add('hidden');
+    document.getElementById('home-screen').classList.remove('hidden');
+    // Cycle ko stop karne ka logic yahan daal sakte hain
+}
+
+function startAviatorCycle() {
     let mult = 1.00;
     let plane = document.getElementById("plane");
     let txt = document.getElementById("multiplier");
-    
-    // 70% chance to crash early (GUEST VIEW LOGIC)
     let crashAt = (Math.random() < 0.7) ? (1.0 + Math.random() * 0.5) : (1.5 + Math.random() * 4);
 
     let timer = setInterval(() => {
         mult += 0.02;
         txt.innerText = mult.toFixed(2) + "x";
         plane.style.left = (mult * 20) + "px";
-        plane.style.bottom = (mult * 15) + "px";
-
+        
         if (mult >= crashAt) {
             clearInterval(timer);
             txt.innerText = mult.toFixed(2) + "x CRASHED";
             txt.style.color = "red";
-            history.unshift(mult.toFixed(2)); // Add to history
-            if(history.length > 10) history.pop();
-            updateHistory();
-            
+            updateHistory(mult.toFixed(2));
             setTimeout(() => {
                 txt.style.color = "white";
-                startLiveCycle(); // Agla round shuru
+                if(!document.getElementById('aviator-screen').classList.contains('hidden')) {
+                    startAviatorCycle();
+                }
             }, 3000);
         }
     }, 100);
 }
 
-// Bet check karne wala function
+function updateHistory(val) {
+    history.unshift(val);
+    let box = document.getElementById("history-box");
+    box.innerHTML = history.slice(0, 8).map(h => `<span class="hist-item">${h}x</span>`).join('');
+}
+
 function checkAuth() {
-    if (!isLoggedIn) {
-        document.getElementById("login-modal").style.display = "block";
-    } else {
-        alert("Bet Placed! Balance: " + balance);
-    }
+    document.getElementById("login-modal").style.display = "block";
 }
-
-function closeLogin() {
-    document.getElementById("login-modal").style.display = "none";
-}
-
-// Login ko simulate karne ke liye
-function loginSuccess() {
-    isLoggedIn = true;
-    balance = 500;
-    document.getElementById("balance").innerText = "Balance: ₹ " + balance;
-    closeLogin();
-}
+// बाकी login/close functions waisa hi rakhen
